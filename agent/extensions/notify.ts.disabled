@@ -1,0 +1,49 @@
+/**
+ * Desktop notification bridge for the Docker sandbox.
+ *
+ * When Pi runs inside a container it has no `notify-send`, no `DISPLAY`, and
+ * no DBUS session, so it cannot call the desktop notifier directly. Instead
+ * this extension writes a short "ping" file to the shared workspace whenever
+ * a run settles, and a watcher process on the host fires the real
+ * `notify-send` when it sees the file.
+ *
+ * The `agent_settled` event fires after the full run settles (retries,
+ * compaction, and queued follow-ups already processed), so the notification
+ * only appears when Pi truly needs your attention.
+ *
+ * Usage:
+ *   1. Load the extension (it is auto-loaded from ~/.pi/agent/extensions).
+ *   2. Start the host watcher:   bash pi/notify-toggle.sh start
+ *
+ * The extension writes <MARKER_FILE> (default ${HOME}/.pi/agent/pi/notify-ping) with the
+ * body text. The watcher consumes it atomically, so each settle fires once.
+ */
+
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { appendFileSync } from "node:fs";
+
+// Path is relative to the working directory, which is bind-mounted to the
+// host, so both the container and the watcher see the same file.
+const MARKER_FILE = process.env.PI_NOTIFY_MARKER ?? `${process.env.HOME}/.pi/agent/pi/notify-ping`;
+
+// Minimum gap between notifications so a burst of settles does not spam you.
+const COOLDOWN_MS = 3 * 60 * 1000; // 3 minutes
+let lastNotifiedAt = 0;
+
+function ping(body: string): void {
+  try {
+    appendFileSync(MARKER_FILE, `${body}\n`, { encoding: "utf8" });
+  } catch {
+    // Best effort: if the workspace is read-only, notifications simply won't fire.
+  }
+}
+
+export default function (pi: ExtensionAPI) {
+  pi.on("agent_settled", async () => {
+    const now = Date.now();
+    if (now - lastNotifiedAt >= COOLDOWN_MS) {
+      lastNotifiedAt = now;
+      ping("Pi: ready for input");
+    }
+  });
+}
