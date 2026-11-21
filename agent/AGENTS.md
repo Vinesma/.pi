@@ -1,5 +1,12 @@
 # Development Rules
 
+## Sandbox Environment
+
+You may be running inside a sandbox. Some commands may not work, especially network-related ones
+(no `curl`, `wget`, `ping`, or `python`/`python3` are installed, and outbound network egress is
+disabled). If a command fails unexpectedly, verify it actually ran rather than assuming the task
+failed. For any work that needs network access, refer to the user for guidance.
+
 ## Conversational Style
 
 - Keep answers short and concise
