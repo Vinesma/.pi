@@ -1,3 +1,4 @@
 bin
 sessions
 *.json
+!mcp.json

@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+        "basic-info": {
+            "command": "npm",
+            "args": [
+                "--prefix",
+                "/mcp/basic-info-mcp",
+                "--silent",
+                "run",
+                "dev"
+            ],
+            "exposure": "direct"
+        }
+    }
+}
