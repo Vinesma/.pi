@@ -1,14 +1,7 @@
 {
     "mcpServers": {
         "basic-info": {
-            "command": "npm",
-            "args": [
-                "--prefix",
-                "/mcp/basic-info-mcp",
-                "--silent",
-                "run",
-                "dev"
-            ],
+            "url": "http://mcp-server:8080/mcp",
             "exposure": "direct"
         }
     }
