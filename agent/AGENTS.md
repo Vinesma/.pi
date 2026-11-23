@@ -31,6 +31,21 @@ failed. For any work that needs network access, refer to the user for guidance.
 - Never commit unless the user asks.
 - Ask the user before trying to download something from the internet (using curl, wget or whatever else).
 
+## MCP Tools
+
+The `basic_info` MCP server provides tools you can use directly:
+
+- `get_date_time` — Get the current date and time.
+- `calculate` — Evaluate an arithmetic expression (`+ - * /` and parentheses).
+- `convert_units` — Convert a value between units of the same dimension (length, mass, volume, area, speed).
+- `web_search` — Search the web via a self-hosted SearXNG instance.
+- `fetch_json` — Fetch a JSON API endpoint and return the parsed body.
+- `fetch_page` — Fetch an HTML page and return its clean, readable text.
+- `download_file` — Download a file from a URL and return it as a base64 data URI.
+- `rss_feed` — Fetch an RSS or Atom feed and return a list of items.
+
+Prefer those tools over raw shell calls (e.g. `curl`) when they fit the task.
+
 ## Git
 
 Multiple sessions may be running in this pwd at the same time, each modifying different files. Git operations that touch unstaged, staged, or untracked files outside your own changes will stomp on other sessions' work. Follow these rules:
