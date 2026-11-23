@@ -33,7 +33,7 @@ failed. For any work that needs network access, refer to the user for guidance.
 
 ## MCP Tools
 
-The `basic_info` MCP server provides tools you can use directly:
+The `basic_info` MCP server provides tools you can use directly via the harness:
 
 - `get_date_time` — Get the current date and time.
 - `calculate` — Evaluate an arithmetic expression (`+ - * /` and parentheses).
